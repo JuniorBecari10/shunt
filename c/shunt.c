@@ -129,7 +129,7 @@ Lexer new_lexer(char *expr) {
 }
 
 Token next_token(Lexer *l) {
-    #define IS_DIGIT(c) c >= '0' && c <= '9'
+    #define IS_DIGIT(c) (c >= '0' && c <= '9')
 
     while (!is_at_end(l) && l->expr[l->current] == ' ')
         l->current++;
@@ -142,7 +142,7 @@ Token next_token(Lexer *l) {
             l->current++;
         
         if (!is_at_end(l) && l->expr[l->current] == '.') {
-            l->current += 1;
+            l->current++;
 
             while (!is_at_end(l) && IS_DIGIT(l->expr[l->current]))
                 l->current++;
@@ -204,8 +204,8 @@ bool is_at_end(Lexer *l) {
 }
 
 bool shunt(char *expr, Token *return_arr, int *return_arr_len) {
-    #define PUSH(list, element) list[(*list##_len)++] = element
-    #define POP(list) list[--(*list##_len)]
+    #define PUSH(list, element) (list[(*list##_len)++] = element)
+    #define POP(list) (list[--(*list##_len)])
 
     Lexer l = new_lexer(expr);
 
@@ -283,8 +283,8 @@ bool shunt(char *expr, Token *return_arr, int *return_arr_len) {
 }
 
 bool eval(Token *tokens, int len, double *out) {
-  #define PUSH(e) stack[sp++] = e
-  #define POP() stack[--sp]
+  #define PUSH(e) (stack[sp++] = e)
+  #define POP() (stack[--sp])
 
   #define BINARY(op)                                                            \
     do {                                                                        \
@@ -374,4 +374,3 @@ void print_double(double v) {
   else
     printf("%.2f\n", v);
 }
-
